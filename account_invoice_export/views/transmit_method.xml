@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="transmit_method_form" model="ir.ui.view">
+        <field name="name">Transmit Method Form view Export</field>
+        <field name="model">transmit.method</field>
+        <field
+            name="inherit_id"
+            ref="account_invoice_transmit_method.transmit_method_form"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='main']" position="after">
+                <group name="export">
+                    <field name="send_through_http" />
+                    <field name="destination_url" />
+                    <field name="destination_user" />
+                    <field name="destination_pwd" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
