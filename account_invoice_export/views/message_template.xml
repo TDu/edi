@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="exception_sending_invoice">
+        <div> Error sending invoice to <t t-esc="transmit_method_name" />.
+            <div class="mt16">
+                <p>An error <b>
+                        <t t-esc="send_error" />
+                    </b> was returned by the distant server.</p>
+            </div>
+            <div class="mt16">
+                <p>Here is the job that failed </p>
+                <a
+                    href="#"
+                    data-oe-model="queue.job"
+                    t-att-data-oe-id="job_id"
+                >Job id <t t-esc="job_id" /></a>
+            </div>
+        </div>
+    </template>
+</odoo>

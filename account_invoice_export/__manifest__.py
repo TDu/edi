@@ -10,6 +10,10 @@
     "author": "Camptocamp SA, Odoo Community Association (OCA)",
     "website": "https://github.com/oca/edi",
     "depends": ["account_invoice_transmit_method", "account_invoice_facturx"],
-    "data": ["views/transmit_method.xml", "views/account_move.xml"],
+    "data": [
+        "views/transmit_method.xml",
+        "views/account_move.xml",
+        "views/message_template.xml",
+    ],
     "installable": True,
 }
