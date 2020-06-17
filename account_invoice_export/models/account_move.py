@@ -5,7 +5,8 @@ import base64
 
 import requests
 
-from odoo import fields, models
+from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 # from odoo.exceptions import UserError
 
@@ -23,12 +24,15 @@ class AccountMove(models.Model):
         if not self.transmit_method_id.send_through_http:
             # raise UserError(_("Transmit method does not allow HTTP Post"))
             pass
+        # Generate the XML to send
+
+        xml_string, level = self.generate_facturx_xml()
 
         # Generate the report if not yet done ?
-        r = self.env["ir.actions.report"]._get_report_from_name(
-            "account.report_invoice"
-        )
-        pdf, _ = r.render([self.id])
+        # r = self.env["ir.actions.report"]._get_report_from_name(
+        #     "account.report_invoice"
+        # )
+        # pdf, _ = r.render([self.id])
         # I thought we where sending a pdf with xml inside but no an xml file
 
         # Generate the url and header to Post
@@ -36,18 +40,15 @@ class AccountMove(models.Model):
             self.transmit_method_id.destination_user,
             self.transmit_method_id.destination_pwd,
         )
-        headers = {
-            "Authorization": "Basic {}".format(
-                base64.encodestring(auth.encode("ascii"))
-            )
-        }
-        files = {"file": pdf}
+        auth64 = base64.encodebytes(auth.encode("ascii"))[:-1]
+        headers = {"Authorization": "Basic " + auth64.decode("utf-8")}
+        files = {"file": ("test_invoice", xml_string, "application/xml")}
 
         # Use request to POST the invoice
-        requests.post(
+        res = requests.post(
             self.transmit_method_id.destination_url, headers=headers, files=files
         )
-
-        # If the call failed what to do
+        if res.status_code != 200:
+            raise UserError(_("Error POST {}".format(res.status_code)))
 
         self.invoice_send_through_http = True

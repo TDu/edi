@@ -15,9 +15,12 @@ class TestExportAcountInvoice(SingleTransactionCase):
                 "code": "httppost",
                 "customer_ok": True,
                 "send_through_http": True,
+                "destination_url": "https://eu1.babelway.net/ws/gateways/771858",
+                "destination_user": "coosa_odoo",
+                "destination_pwd": "90asw43kfdsx",
             }
         )
-        # cls.country = cls.env.ref("base.ch")
+        cls.country = cls.env.ref("base.ch")
         # cls.company = cls.env.user.company_id
         # cls.company.vat = "CHE-012.345.678"
         # cls.company.name = "Camptocamp SA"
@@ -52,7 +55,7 @@ class TestExportAcountInvoice(SingleTransactionCase):
                 "street": "Teststrasse 100",
                 "city": "Fribourg",
                 "zip": "1700",
-                # "country_id": cls.country.id,
+                "country_id": cls.country.id,
                 # "state_id": cls.state.id,
             }
         )
@@ -108,6 +111,9 @@ class TestExportAcountInvoice(SingleTransactionCase):
                 ],
             }
         )
+        company = cls.invoice_1.company_id
+        if company.xml_format_in_pdf_invoice != "factur-x":
+            company.xml_format_in_pdf_invoice = "factur-x"
 
     def test_export_invoice(self):
         self.assertTrue(True)
