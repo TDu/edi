@@ -11,6 +11,7 @@
     "website": "https://github.com/oca/edi",
     "depends": ["account_invoice_transmit_method", "account_invoice_facturx"],
     "data": [
+        "data/mail_activity_type.xml",
         "views/transmit_method.xml",
         "views/account_move.xml",
         "views/message_template.xml",

@@ -24,3 +24,7 @@ class TransmitMethod(models.Model):
         auth = "{}:{}".format(self.destination_user, self.destination_pwd,)
         auth64 = base64.encodebytes(auth.encode("ascii"))[:-1]
         return {"Authorization": "Basic " + auth64.decode("utf-8")}
+
+    def get_file_to_send(self):
+        """ """
+        pass
